@@ -8,5 +8,6 @@ const tasksController = new TaksController();
 tasksRoutes.post("/", tasksController.create);
 tasksRoutes.put("/:identificador_da_tarefa", tasksController.update);
 tasksRoutes.get("/", tasksController.index);
+tasksRoutes.delete("/:identificador_da_tarefa", tasksController.delete);
 
 module.exports = tasksRoutes;

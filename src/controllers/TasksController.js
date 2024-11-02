@@ -42,6 +42,16 @@ class TasksController {
 
         return response.json(tasks);
     }
+
+    async delete(request, response) {
+        const { identificador_da_tarefa } = request.params;
+
+        const taskRepository = new TaskRepository();
+        const tasksService = new TasksService(taskRepository);
+        await tasksService.taskDelete(identificador_da_tarefa);
+
+        return response.json({ message: "Tarefa deletada com sucesso!" });
+    }
 }
 
 module.exports = TasksController;

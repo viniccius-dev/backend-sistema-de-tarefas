@@ -43,6 +43,10 @@ class TaskRepository {
 
         return tasks;
     }
+
+    async deleteTask(identificador_da_tarefa) {
+        return await knex("Tarefas").where({ identificador_da_tarefa }).delete();
+    }
 }
 
 module.exports = TaskRepository;

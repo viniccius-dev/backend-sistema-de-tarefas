@@ -58,6 +58,16 @@ class TasksService {
 
         return taskUpdated;
     }
+
+    async taskDelete(identificador_da_tarefa) {
+        const task = await this.tasksRepository.findById(identificador_da_tarefa);
+
+        if(!task) {
+            throw new AppError("Tarefa não encontrada.", 404);
+        }
+
+        await this.tasksRepository.deleteTask(task.identificador_da_tarefa);
+    }
 }
 
 module.exports = TasksService;
