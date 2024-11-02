@@ -15,6 +15,26 @@ class TasksController {
 
         return response.status(201).json({ task, message: "Tarefa cadastrada com sucesso." });
     }
+
+    async update(request, response) {
+        const { 
+            nome_da_tarefa, 
+            custo, 
+            data_limite 
+        } = request.body;
+        const { identificador_da_tarefa } = request.params;
+        
+        const taskRepository = new TaskRepository();
+        const tasksService = new TasksService(taskRepository);
+        await tasksService.taskUpdate({
+            identificador_da_tarefa,
+            nome_da_tarefa,
+            custo,
+            data_limite
+        });
+
+        return response.status(201).json({ message: "Tarefa atualizada com sucesso." });
+    }
 }
 
 module.exports = TasksController;

@@ -28,6 +28,36 @@ class TasksService {
 
         return taskCreate;
     }
+
+    async taskUpdate({
+        identificador_da_tarefa,
+        nome_da_tarefa, 
+        custo, 
+        data_limite 
+    }) {
+        const task = await this.tasksRepository.findById(identificador_da_tarefa);
+
+        if(!task) {
+            throw new AppError("Tarefa não encontrada.", 404);
+        };
+
+        if(nome_da_tarefa) {
+            const taskWithUpdateName = await this.tasksRepository.findByName(nome_da_tarefa);
+
+            if(taskWithUpdateName && taskWithUpdateName.identificador_da_tarefa !== task.identificador_da_tarefa) {
+                throw new AppError("Já existe uma tarefa com esse nome.");
+            } else {
+                task.nome_da_tarefa = nome_da_tarefa;
+            }
+        }
+
+        task.custo = custo ?? task.custo;
+        task.data_limite = data_limite ?? task.data_limite;
+
+        const taskUpdated = await this.tasksRepository.updateTask(task);
+
+        return taskUpdated;
+    }
 }
 
 module.exports = TasksService;

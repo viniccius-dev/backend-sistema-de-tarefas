@@ -1,14 +1,20 @@
 const knex = require("../database/knex");
 
 class TaskRepository {
+    async findById(identificador_da_tarefa) {
+        const id = await knex("Tarefas").where({ identificador_da_tarefa }).first();
+
+        return id;
+    }
+
     async findByName(nome_da_tarefa) {
-        const name = await knex("tarefas").where({ nome_da_tarefa }).first();
+        const name = await knex("Tarefas").where({ nome_da_tarefa }).first();
 
         return name;
     }
 
     async newOrder() {
-        const maxOrder = await knex("tarefas").max("ordem_da_apresentacao as maxOrder");
+        const maxOrder = await knex("Tarefas").max("ordem_da_apresentacao as maxOrder");
 
         const newOrder = (maxOrder[0].maxOrder || 0) + 1;
 
@@ -24,6 +30,12 @@ class TaskRepository {
         });
 
         return { id };
+    }
+
+    async updateTask(task) {
+        const taskUpdated = await knex("Tarefas").update(task).where({ identificador_da_tarefa: task.identificador_da_tarefa });
+
+        return taskUpdated;
     }
 }
 

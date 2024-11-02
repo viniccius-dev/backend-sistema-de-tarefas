@@ -6,5 +6,6 @@ const TaksController = require("../controllers/TasksController");
 const tasksController = new TaksController();
 
 tasksRoutes.post("/", tasksController.create);
+tasksRoutes.put("/:identificador_da_tarefa", tasksController.update);
 
 module.exports = tasksRoutes;
