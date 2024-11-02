@@ -37,6 +37,12 @@ class TaskRepository {
 
         return taskUpdated;
     }
+
+    async getTasks() {
+        const tasks = await knex("Tarefas");
+
+        return tasks;
+    }
 }
 
 module.exports = TaskRepository;

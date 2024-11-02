@@ -35,6 +35,13 @@ class TasksController {
 
         return response.status(201).json({ message: "Tarefa atualizada com sucesso." });
     }
+
+    async index(request, response) {
+        const taskRepository = new TaskRepository();
+        const tasks = await taskRepository.getTasks();
+
+        return response.json(tasks);
+    }
 }
 
 module.exports = TasksController;
