@@ -1,8 +1,19 @@
+const TaskRepository = require("../repositories/TaskRepository");
+const TasksService = require("../services/TasksService");
+
 class TasksController {
     async create(request, response) {
-        const { task_name, cost, deadline } = request.body;
+        const { nome_da_tarefa, custo, data_limite } = request.body;
 
-        return response.status(201).json({ task_name, cost, deadline });
+        const taskRepository = new TaskRepository();
+        const tasksService = new TasksService(taskRepository);
+        const task = await tasksService.taskCreate({
+            nome_da_tarefa,
+            custo,
+            data_limite
+        });
+
+        return response.status(201).json({ task, message: "Tarefa cadastrada com sucesso." });
     }
 }
 
