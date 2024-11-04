@@ -48,11 +48,11 @@ class TaskRepository {
             tasks = await knex("Tarefas")
             .whereLike("nome_da_tarefa", `%${nome_da_tarefa}%`)
             .whereIn("data_limite", filterTasks)
-            .orderBy("ordem_da_apresentacao", "desc");
+            .orderBy("ordem_da_apresentacao", "asc");
         } else {
             tasks = await knex("Tarefas")
             .whereLike("nome_da_tarefa", `%${nome_da_tarefa}%`)
-            .orderBy("ordem_da_apresentacao", "desc");
+            .orderBy("ordem_da_apresentacao", "asc");
         }
 
         return tasks;
@@ -63,19 +63,30 @@ class TaskRepository {
     }
 
     async getTasksOrderByDate() {
-        const tasks = await knex("Tarefas")
-        .select("*");
-
-        const orderedTasks = tasks.sort((a, b) => {
+        const tasks = await knex("Tarefas").select("*");
+    
+        const uniqueDates = new Set();
+        
+        const filteredTasks = tasks.filter(task => {
+            const date = task.data_limite;
+            
+            if (!uniqueDates.has(date)) {
+                uniqueDates.add(date);
+                return true;
+            }
+            return false;
+        });
+    
+        const orderedTasks = filteredTasks.sort((a, b) => {
             const [dayA, monthA, yearA] = a.data_limite.split("/");
             const [dayB, monthB, yearB] = b.data_limite.split("/");
-
+    
             const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
             const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-
+    
             return dateA - dateB;
         });
-
+    
         return orderedTasks;
     }
 }

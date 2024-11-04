@@ -68,6 +68,22 @@ class TasksService {
 
         await this.tasksRepository.deleteTask(task.identificador_da_tarefa);
     }
+
+    async swapOrder(idTask1, idTask2) {
+        const task1 = await this.tasksRepository.findById(idTask1);
+        const task2 = await this.tasksRepository.findById(idTask2);
+
+        if(!task1 || !task2) {
+            throw new AppError("Uma ou ambas as tarefas não foram encontradas", 404);
+        }
+
+        const ordemTemp = task1.ordem_da_apresentacao;
+        task1.ordem_da_apresentacao = task2.ordem_da_apresentacao;
+        task2.ordem_da_apresentacao = ordemTemp;
+
+        await this.tasksRepository.updateTask(task1);
+        await this.tasksRepository.updateTask(task2);
+    }
 }
 
 module.exports = TasksService;

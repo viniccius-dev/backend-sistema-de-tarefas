@@ -61,6 +61,17 @@ class TasksController {
 
         return response.json(tasks);
     }
+
+    async updateOrder(request, response) {
+        const { idTask1, idTask2 } = request.body;
+
+        const taskRepository = new TaskRepository();
+        const tasksService = new TasksService(taskRepository);
+
+        await tasksService.swapOrder(idTask1, idTask2);
+
+        return response.json({ message: "Ordem das tarefas atualizada com sucesso!" });
+    }
 }
 
 module.exports = TasksController;

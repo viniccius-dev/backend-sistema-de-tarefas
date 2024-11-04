@@ -6,6 +6,7 @@ const TaksController = require("../controllers/TasksController");
 const tasksController = new TaksController();
 
 tasksRoutes.post("/", tasksController.create);
+tasksRoutes.put("/update-order", tasksController.updateOrder);
 tasksRoutes.put("/:identificador_da_tarefa", tasksController.update);
 tasksRoutes.get("/", tasksController.index);
 tasksRoutes.get("/date", tasksController.orderByDate);
