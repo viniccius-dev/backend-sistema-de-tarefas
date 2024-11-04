@@ -37,8 +37,10 @@ class TasksController {
     }
 
     async index(request, response) {
+        const { title, date } = request.query;
+
         const taskRepository = new TaskRepository();
-        const tasks = await taskRepository.getTasks();
+        const tasks = await taskRepository.getTasks({ nome_da_tarefa: title, tarefas_filtradas: date });
 
         return response.json(tasks);
     }
@@ -51,6 +53,13 @@ class TasksController {
         await tasksService.taskDelete(identificador_da_tarefa);
 
         return response.json({ message: "Tarefa deletada com sucesso!" });
+    }
+
+    async orderByDate(request, response) {
+        const taskRepository = new TaskRepository();
+        const tasks = await taskRepository.getTasksOrderByDate();
+
+        return response.json(tasks);
     }
 }
 
